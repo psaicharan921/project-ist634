@@ -1,0 +1,202 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  border-top: 1px solid rgba(27, 145, 223, 0.852);
+  height:100px;
+  text-align: center;
+  color: white;
+  font-size: xx-large;
+  font-weight: bold;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.layout {
+  height: 130px;
+}
+
+.Nav_Container {
+  justify-content: space-between;
+  padding-right: 20px;
+  height: 115px;
+}
+
+.Nav_Elements_1, .Nav_Elements_2 {
+  list-style-type: none;
+  display: flex;
+  justify-content: space-between;
+  width: 300px;
+}
+
+.Nav_Elements_2 {
+  float: right;
+}
+
+.links, .links_1 {
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+}
+
+.links_1 {
+  font-size: xx-large;
+}
+
+.links {
+  font-size: large;
+}
+
+.links:hover {
+  background-color: #85c8ef;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.page {
+  background-image: linear-gradient(rgba(27, 145, 223, 0.852),rgba(128, 188, 228, 0.852));
+  min-height: 100vh;
+  min-width: 100vb;
+  border: 1px solid rgb(37, 144, 226);
+}
+
+.charts {
+  padding : 20px;
+  margin: 20px;
+  border: 2px Solid White;
+  border-radius: 20px;
+  box-shadow: 10px 10px 15px #000; 
+}
+
+.charts h4 {
+  margin:0;
+  color: white;
+  text-align: center;
+}
+
+.dropdown_menu {
+  margin-top :30px;
+  width: 200px;
+}
+
+.chart_buttons {
+  margin-top: 10px;
+  color: White;
+  background-color: rgb(3, 81, 183);
+  padding: 8px;
+  font-size: 12px;
+  border-radius: 8px;
+  font-weight: bold;
+  box-shadow: 5px 5px 15px #000; 
+  cursor: pointer;
+}
+
+.bar_chart {
+  width:700px;
+  height:200px;
+  background-color: white;
+  margin-top: 20px;
+  border-radius: 10px;
+  padding:10px
+}
+
+.chart_container {
+  display:flex;
+  justify-content: center;
+}
+
+.dropdowns_container {
+  display: flex;
+  width:500px;
+  justify-content: space-between;
+}
+
+.button_container {
+  border: 1px solid black;
+  padding:50px;
+  margin: 50px;
+  display: flex;
+  justify-content: space-between;
+  height: 100px
+}
+
+.route_buttons {
+  width: 40%;
+  height: 25%vh;
+  padding: 20px;
+  background-color: #1172bc;
+  text-align: center;
+  color: azure;
+  font-weight: bold;
+  border-radius: 25px;
+  box-shadow: 5px 5px 15px #000; 
+}
+
+.charts1 {
+  padding : 20px;
+  margin: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.pie_chart {
+  width:250px;
+  height:250px;
+  background-color: white;
+  margin-top: 20px;
+  border-radius: 10px;
+  padding:10px;
+}
+
+.pie_chart1 {
+  width:700px;
+  height:350px;
+  background-color: white;
+  margin-top: 20px;
+  border-radius: 10px;
+  padding:10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.pie_chart2 {
+  width:400px;
+  height:400px;
+  background-color: white;
+  margin-top: 20px;
+  border-radius: 10px;
+  padding:10px;
+  color: rgb(9, 42, 43)
+}
+
+.bar_chart1 {
+  width:1500px;
+  height: 400px;
+  background-color: white;
+  margin-top: 20px;
+  border-radius: 10px;
+  padding:10px
+}

@@ -1,0 +1,16 @@
+_id,Area_Id,Accident_Area_Type,Accident_Area
+655d5a177086282ba8e0814e,10,Rural,Alaska
+655d5a177086282ba8e0814f,20,Rural,Montana
+655d5a177086282ba8e08150,30,Rural,North Dakota
+655d5a177086282ba8e08151,40,Rural,Wyoming
+655d5a177086282ba8e08152,50,Rural,Vermont
+655d5a177086282ba8e08153,60,Suburban,Cary
+655d5a177086282ba8e08154,70,Suburban,Cupertino
+655d5a177086282ba8e08155,80,Suburban,Naperville
+655d5a177086282ba8e08156,90,Suburban,Schaumburg
+655d5a177086282ba8e08157,100,Suburban,Arlington
+655d5a177086282ba8e08158,110,Urban,Atlanta
+655d5a177086282ba8e08159,120,Urban,Chicago
+655d5a177086282ba8e0815a,130,Urban,Houston
+655d5a177086282ba8e0815b,140,Urban,Philadelphia
+655d5a177086282ba8e0815c,150,Urban,San Francisco

@@ -1,0 +1,24 @@
+_id,Policy_Id,Base_Policy,Vehicle_category,Deductible
+655e236091d67ee903e53c53,100,Liability,Sport,300
+655e236091d67ee903e53c54,200,Collision,Sport,400
+655e236091d67ee903e53c55,300,Liability,Sport,400
+655e236091d67ee903e53c56,400,All Perils,Utility,400
+655e236091d67ee903e53c57,500,All Perils,Sedan,400
+655e236091d67ee903e53c58,600,Collision,Sedan,400
+655e236091d67ee903e53c59,700,Liability,Sport,500
+655e236091d67ee903e53c5a,800,Collision,Utility,400
+655e236091d67ee903e53c5b,900,Liability,Utility,400
+655e236091d67ee903e53c5c,1000,Collision,Sedan,700
+655e236091d67ee903e53c5d,1100,All Perils,Sedan,500
+655e236091d67ee903e53c5e,1200,Liability,Sport,700
+655e236091d67ee903e53c5f,1300,All Perils,Sedan,700
+655e236091d67ee903e53c60,1400,Collision,Sedan,500
+655e236091d67ee903e53c61,1500,All Perils,Utility,700
+655e236091d67ee903e53c62,1600,Collision,Sport,500
+655e236091d67ee903e53c63,1700,All Perils,Sport,400
+655e236091d67ee903e53c64,1800,Collision,Utility,700
+655e236091d67ee903e53c65,1900,Collision,Sport,700
+655e236091d67ee903e53c66,2000,Collision,Sedan,300
+655e236091d67ee903e53c67,2100,All Perils,Utility,500
+655e236091d67ee903e53c68,2200,All Perils,Sedan,300
+655e236091d67ee903e53c69,2300,All Perils,Sport,700
