@@ -10,6 +10,12 @@ const options = [
   { value: 1 , label: 'Fraud' }
 ];
 
+const options1 = [
+  { value: "All Perils" , label: "All Perils" },
+  { value: "Collision" , label: "Collision" },
+  { value: "Liability" , label: "Liability" }
+];
+
 
 export default function Piechart() {
 
@@ -27,6 +33,11 @@ export default function Piechart() {
 
   const [pieChart4,setPieChart4] = useState([]);
 
+  const [selectedOptionValue2, setSelectedOptionValue2] = useState();
+
+  const [pieChart5,setPieChart5] = useState([]);
+
+  const [pieChart6,setPieChart6] = useState([]);
 
 
 
@@ -47,6 +58,10 @@ export default function Piechart() {
 
 const handleChange1 = async (event) => {
   setSelectedOptionValue1(event.value);
+}
+
+const handleChange2 = async (event) => {
+  setSelectedOptionValue2(event.value);
 }
 
 const fetchresponse = async (val) => {
@@ -70,6 +85,17 @@ const fetchresponse1 = async (val) => {
   }
 };
 
+const fetchresponse2 = async (val) => {
+  try {
+    console.log(val);
+    const response = await axios.post('http://localhost:5000/policy', { Policy : val });
+    setPieChart5(response.data[0]);
+    setPieChart6(response.data[1]);
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
+};
+
 const handleSubmit=(e)=> {
   e.preventDefault();
   fetchresponse(selectedOptionValue);
@@ -80,6 +106,10 @@ const handleSubmit1=(e)=> {
   fetchresponse1(selectedOptionValue1);
 }
 
+const handleSubmit2=(e)=> {
+  e.preventDefault();
+  fetchresponse2(selectedOptionValue2);
+}
 
 
 
@@ -94,7 +124,7 @@ const handleSubmit1=(e)=> {
 
 const pieChartColors = [ '#2ecc71','#e74c3c'];
 
-const pieChartColors1 = [ '#2ecc71','#e74c3c', '#ecf0f1', '#2c3e50', '#2980b9', '#27ae60', '#f39c12', '#c0392b', '#3498db', '#9b59b6', '#e67e22', '#1abc9c', '#f1c40f', '#34495e'];
+const pieChartColors1 = [ '#27ae60', '#34495e', '#2ecc71', '#c0392b', '#8e44ad', '#ecf0f1', '#9b59b6', '#d35400', '#e74c3c', '#16a085','#1abc9c', '#3498db', '#e67e22', '#f1c40f', '#2c3e50', '#f39c12', '#2980b9']
 
 
 
@@ -120,7 +150,6 @@ const pieChartColors1 = [ '#2ecc71','#e74c3c', '#ecf0f1', '#2c3e50', '#2980b9', 
       <div className='charts'>
           <h4> Pie Chart</h4>
           <Select 
-            // defaultValue={selectedOption}
             onChange={handleChange1}
             options= {options}
             className="dropdown_menu"
@@ -149,7 +178,6 @@ const pieChartColors1 = [ '#2ecc71','#e74c3c', '#ecf0f1', '#2c3e50', '#2980b9', 
       <div className='charts'>
           <h4> Pie Chart</h4>
           <Select 
-            // defaultValue={selectedOption}
             onChange={handleChange}
             options= {option}
             className="dropdown_menu"
@@ -161,7 +189,7 @@ const pieChartColors1 = [ '#2ecc71','#e74c3c', '#ecf0f1', '#2c3e50', '#2980b9', 
             <div className='pie_chart1'>
                 <Pie
                   data={{
-                    labels: pieChart2.map((data, i) => String(data.Make)),
+                    labels: pieChart2.map((data) => String(data.Make)),
                     datasets: [
                       {
                         label: "Average",
@@ -173,11 +201,51 @@ const pieChartColors1 = [ '#2ecc71','#e74c3c', '#ecf0f1', '#2c3e50', '#2980b9', 
                 />
                 <Pie
                   data={{
-                    labels: pieChart3.map((data, i) => String(data.Make)),
+                    labels: pieChart3.map((data) => String(data.Make)),
                     datasets: [
                       {
                         label: "Average",
                         data: pieChart3.map((data) => data.avg),
+                        backgroundColor:pieChartColors1
+                      },
+                    ],
+                  }}
+                />
+            </div>
+          }
+        </div>
+      </div>
+      <div className='charts'>
+          <h4> Pie Chart</h4>
+          <Select 
+            onChange={handleChange2}
+            options= {options1}
+            className="dropdown_menu"
+          />
+          <button className='chart_buttons' type="submit" onClick={handleSubmit2}>Submit</button>
+        <div className='chart_container'>
+          {
+            (pieChart5.length > 0 || pieChart6.length > 0) &&
+            <div className='pie_chart1'>
+                <Pie
+                  data={{
+                    labels: pieChart5.map((data) => String(data.Vehicle_Make)),
+                    datasets: [
+                      {
+                        label: "Average",
+                        data: pieChart5.map((data) => data.Average),
+                        backgroundColor:pieChartColors1
+                      },
+                    ],
+                  }}
+                />
+                <Pie
+                  data={{
+                    labels: pieChart6.map((data) => String(data.Vehicle_Make)),
+                    datasets: [
+                      {
+                        label: "Average",
+                        data: pieChart6.map((data) => data.Average),
                         backgroundColor:pieChartColors1
                       },
                     ],

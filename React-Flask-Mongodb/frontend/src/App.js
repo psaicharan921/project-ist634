@@ -3,7 +3,7 @@ import { Route,Routes } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Home from './components/Home';
 import Analysis from './components/Analysis ';
-import Result from './components/Result';
+import ContactUs from './components/ContactUs';
 import Mainpage from './components/Mainpage';
 import Barchart from './components/Barchart';
 import Piechart from './components/Piechart';
@@ -19,7 +19,7 @@ function App() {
         <Route path="analysis" element={<Analysis />} />
         <Route path="analysis/barchart" element= {<Barchart />}/>
         <Route path="analysis/piechart" element= {<Piechart />}/>
-        <Route path="result" element={<Result />} /> 
+        <Route path="contactus" element={<ContactUs />} /> 
       </Route>
     </Routes>
   );

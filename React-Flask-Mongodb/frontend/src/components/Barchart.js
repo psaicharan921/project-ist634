@@ -7,8 +7,6 @@ import { Bar } from 'react-chartjs-2';
 const options = [
   { value: '$Year', label: 'Year' },
   { value: '$Month', label: 'Month' }
-  // { value: '$accident.Accident_Area_Type', label: 'Accident Area Type' },
-  // { value: '$accident.Accident_Area', label: 'Accident Place' },
 ];
 
 const options1 = [
@@ -20,7 +18,6 @@ const options2 = [
   { value: 'Sedan', label: 'Sedan' },
   { value: 'Sport', label: 'Sport' },
   { value: 'Utility', label: 'Utility' }
-
 ];
 
 export default function Barchart() {
@@ -53,7 +50,11 @@ export default function Barchart() {
 
   const [selectedOptionValue4, setSelectedOptionValue4] = useState();
 
-  const [barChart4,setBarChart4] = useState([]);
+  const [barChart4Labels,setBarChart4Labels] = useState([]);
+
+  const [barChart4MaleData,setBarChart4MaleData] = useState([]);
+
+  const [barChart4FemaleData,setBarChart4FemaleData] = useState([]);
 
 
   useEffect(() => {
@@ -62,10 +63,6 @@ export default function Barchart() {
     }).catch((error) => console.log(error));
  }, []);
 
- 
-
-
-  
 
   const handleChange = (event) => {
     setSelectedOption(event.label)
@@ -124,13 +121,52 @@ export default function Barchart() {
 
   const fetchresponse3 = async (val) => {
     try {
-      console.log(val);
       const response = await axios.post('http://localhost:5000/vehcilecategorygender', { Category : val });
-      setBarChart4(response.data);
+      chartInfo(response.data);
     } catch (error) {
       console.error('Error fetching data:', error);
     }
   };
+
+
+  const chartInfo = (val) => {
+    try {
+
+        const maleLabels = val[0].map((data) => data._id);
+        const femaleLabels = val[1].map((data) => data._id);
+        const allLabels = [...new Set(maleLabels.concat(femaleLabels))];
+
+        setBarChart4Labels(allLabels);
+
+        const maleData = [];
+        const femaleData = [];
+
+        for (let i = 0; i < allLabels.length; i++) {
+
+            const label = allLabels[i];
+            const maleDataPoint = val[0].find((data) => data._id === label);
+            const femaleDataPoint = val[1].find((data) => data._id === label);
+
+            if (maleDataPoint) {
+              maleData.push(maleDataPoint.count);
+            } else {
+                maleData.push(0);
+            }
+
+            if (femaleDataPoint) {
+              femaleData.push(femaleDataPoint.count);
+          } else {
+              femaleData.push(0);
+          }
+        }
+
+        setBarChart4MaleData(maleData);
+        setBarChart4FemaleData(femaleData);
+
+    } catch (error) {
+        console.error('Error fetching data:', error);
+    }
+};
   
   const handleSubmit=(e)=> {
     e.preventDefault();
@@ -163,7 +199,6 @@ export default function Barchart() {
         <div className='charts'>
           <h4>Bar Chart Analyzer based on Year or Month</h4>
           <Select 
-            // defaultValue={selectedOption}
             onChange={handleChange}
             options={options}
             className="dropdown_menu"
@@ -180,8 +215,8 @@ export default function Barchart() {
                     {
                       label: String(selectedOptionLabel),
                       data: barChart1.map((data) => data.count),
-                      backgroundColor: 'rgb(56, 200, 205)',
-                      borderColor: 'rgb(56, 200, 205)',
+                      backgroundColor: '#3498db',
+                      borderColor: '#3498db',
                       borderWidth: 1,
                       borderRadius: 5
                     },
@@ -224,7 +259,6 @@ export default function Barchart() {
         <div className='charts'>
           <h4>Bar Chart Analyzer based on Accident Area or Accident Place</h4>
           <Select 
-            // defaultValue={selectedOption}
             onChange={handleChange1}
             options={options1}
             className="dropdown_menu"
@@ -241,8 +275,8 @@ export default function Barchart() {
                     {
                       label: String(selectedOptionLabel1),
                       data: barChart2.map((data) => data.count),
-                      backgroundColor: 'rgb(56, 200, 205)',
-                      borderColor: 'rgb(56, 200, 205)',
+                      backgroundColor: '#3498db',
+                      borderColor: '#3498db',
                       borderWidth: 1,
                       borderRadius: 5
                     },
@@ -283,16 +317,14 @@ export default function Barchart() {
           </div>
         </div>
         <div className='charts'>
-          <h4>Bar Chart Analyzer based on Accident Area or Accident Place</h4>
+          <h4>Bar Chart Analyzer based on Vehicle Make and Vehicle Category</h4>
           <div className='dropdowns_container'>
             <Select 
-              // defaultValue={selectedOption}
               onChange={handleChange2}
               options={option}
               className="dropdown_menu"
             />
             <Select 
-              // defaultValue={selectedOption}
               onChange={handleChange3}
               options={option1}
               className="dropdown_menu"
@@ -310,8 +342,8 @@ export default function Barchart() {
                     {
                       label: 'Vehicle Accidents',
                       data: barChart3.map((data) => data.count),
-                      backgroundColor: 'rgb(56, 200, 205)',
-                      borderColor: 'rgb(56, 200, 205)',
+                      backgroundColor: '#3498db',
+                      borderColor: '#3498db',
                       borderWidth: 1,
                       borderRadius: 5
                     },
@@ -352,9 +384,8 @@ export default function Barchart() {
           </div>
         </div>
         <div className='charts'>
-          <h4>Bar Chart Analyzer based on Accident Area or Accident Place</h4>
+          <h4>Bar Chart Analyzer based on Vehicle Category based on Gender</h4>
           <Select 
-            // defaultValue={selectedOption}
             onChange={handleChange4}
             options={options2}
             className="dropdown_menu"
@@ -362,25 +393,25 @@ export default function Barchart() {
           <button className='chart_buttons' type="submit" onClick={handleSubmit3}>Submit</button>
           <div className='chart_container'>
           {
-            barChart4.length > 0 &&
+            barChart4Labels.length > 0 &&
             <div className='bar_chart1'>
               <Bar
                 data={{
-                  labels: barChart4[0].map((data) => String(data._id)),
+                  labels: barChart4Labels,
                   datasets: [
                     {
                       label: "Male",
-                      data: barChart4[0].map((data) => data.count),
-                      backgroundColor: 'rgb(56, 200, 205)',
-                      borderColor: 'rgb(56, 200, 205)',
+                      data: barChart4MaleData,
+                      backgroundColor: '#3498db',
+                      borderColor: '#3498db',
                       borderWidth: 1,
                       borderRadius: 5
                     },
                     {
                       label: "Female",
-                      data: barChart4[1].map((data) => data.count),
-                      backgroundColor: 'rgb(9, 42, 43)',
-                      borderColor: 'rgb(9, 42, 43)',
+                      data: barChart4FemaleData,
+                      backgroundColor: 'yellow',
+                      borderColor: 'yellow',
                       borderWidth: 1,
                       borderRadius: 5
                     },

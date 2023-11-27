@@ -5,7 +5,6 @@ import os
 
 app = Flask(__name__)
 
-# read database configuration from .evn file 
 token = os.getenv("ACCESS_TOKEN")
 db_uri = os.getenv("DB_URI")
 
@@ -40,10 +39,13 @@ def getinsurances():
 
     if val == "$Year_Claimed" :
         query = [{"$group": {"_id": val, "count": {"$sum": 1 }}}]
+        
         result = list(mongo.db.Fraud.aggregate(query))
         print(result)
     else:
-        query1 = [{"$group": {"_id": val, "count": {"$sum": 1 }}},{"$sort" : {"count":1}}]
+        query1 = [{"$group": {"_id": val, "count": {"$sum": 1 }}},
+                  {"$sort" : {"count":1}}]
+        
         result = list(mongo.db.Fraud.aggregate(query1))
         print(result)
 
@@ -56,11 +58,16 @@ def getaccidents():
     print(val)
 
     if val == "$accident.Accident_Area_Type":
-        query1 = [{"$lookup":{"from":"Accident","localField":"Accident_Area","foreignField":"_id","as":"accident"}},{"$group":{"_id": val,"count":{"$sum":1}}}]
+        query1 = [{"$lookup":{"from":"Accident","localField":"Accident_Area","foreignField":"_id","as":"accident"}},
+                  {"$group":{"_id": val,"count":{"$sum":1}}}]
+        
         result = list(mongo.db.Fraud.aggregate(query1))
+        
         print(result)
     else:
-        query2 = [{"$lookup":{"from":"Accident","localField":"Accident_Area","foreignField":"_id","as":"accident"}},{"$group":{"_id": val,"count":{"$sum":1}}}]
+        query2 = [{"$lookup":{"from":"Accident","localField":"Accident_Area","foreignField":"_id","as":"accident"}},
+                  {"$group":{"_id": val,"count":{"$sum":1}}}]
+        
         result = list(mongo.db.Fraud.aggregate(query2))
         print(result)
     
@@ -71,6 +78,7 @@ def getvehiclemake():
 
     query = "Vehicle_Make"
     result = list(mongo.db.Vehicle.distinct(query))
+
     print(result)
  
     return result
@@ -94,7 +102,13 @@ def getvehicleaccidents():
     val=request.json['vehicle']
     print(val)
 
-    query = [{ "$lookup": { "from": "Vehicle", "localField": "Vehicle", "foreignField": "_id", "as": "vehicle" } }, { "$unwind": "$vehicle" }, { "$match": { "vehicle.Vehicle_Make": val[0], "vehicle.Vehicle_Category": val[1] } }, { "$lookup": { "from": "Accident", "localField": "Accident_Area", "foreignField": "_id", "as": "accident" } }, { "$unwind": "$accident" }, { "$group": { "_id": "$accident.Accident_Area", "count": { "$sum": 1 } } }]
+    query = [{ "$lookup": { "from": "Vehicle", "localField": "Vehicle", "foreignField": "_id", "as": "vehicle" } },
+             { "$unwind": "$vehicle" }, 
+             { "$match": { "vehicle.Vehicle_Make": val[0], "vehicle.Vehicle_Category": val[1] } }, 
+             { "$lookup": { "from": "Accident", "localField": "Accident_Area", "foreignField": "_id", "as": "accident" } }, 
+             { "$unwind": "$accident" }, 
+             { "$group": { "_id": "$accident.Accident_Area", "count": { "$sum": 1 } } }]
+    
     result = list(mongo.db.Fraud.aggregate(query))
     print(result)
  
@@ -104,7 +118,9 @@ def getvehicleaccidents():
 @app.route('/frauds', methods=['GET'])
 def getfrauds():
 
-    query = [{ "$group" : { "_id" : "$Fraud" , "count" : { "$sum" : 1} }},{"$sort" : {"count": -1}}]
+    query = [{ "$group" : { "_id" : "$Fraud" , "count" : { "$sum" : 1} }},
+             {"$sort" : {"count": -1}}]
+    
     result = list(mongo.db.Fraud.aggregate(query))
     print(result)
  
@@ -119,11 +135,21 @@ def getfraudvehicleinsurances():
     results=[]
 
     for x in range(2):
-        query = [{ "$lookup": { "from": "Vehicle", "localField": "Vehicle", "foreignField": "_id", "as": "vehicle" } }, { "$unwind": "$vehicle" }, { "$match": { "vehicle.Vehicle_Make": var , "Fraud" : x } }, { "$group": { "_id": "$vehicle.Vehicle_Make", "avg": { "$avg": "$Insurance_Amount" } } }]
+        query = [{ "$lookup": { "from": "Vehicle", "localField": "Vehicle", "foreignField": "_id", "as": "vehicle" } }, 
+                 { "$unwind": "$vehicle" }, 
+                 { "$match": { "vehicle.Vehicle_Make": var , "Fraud" : x } }, 
+                 { "$group": { "_id": "$vehicle.Vehicle_Make", "avg": { "$avg": "$Insurance_Amount" } } }]
+        
         val = list(mongo.db.Fraud.aggregate(query))
 
         if val :
-            query1 = [{ "$lookup": { "from": "Vehicle", "localField": "Vehicle", "foreignField": "_id", "as": "vehicle" } }, { "$unwind": "$vehicle" }, { "$group": { "_id": { "Make" : "$vehicle.Vehicle_Make" , "Fraud" : "$Fraud" }, "avg": { "$avg": "$Insurance_Amount" } } }, { "$sort": { "_id": 1 } }, { "$project" : { "Make" : "$_id.Make" , "Fraud" : "$_id.Fraud" , "avg" : 1 , "_id" : 0 } },{ "$match": { "$and" : [{ "Make": { "$ne": val[0]["_id"] } }, { "avg" : { "$gt" : val[0]["avg"] } } ,{ "Fraud" : { "$eq" : x }}] }}]
+            query1 = [{ "$lookup": { "from": "Vehicle", "localField": "Vehicle", "foreignField": "_id", "as": "vehicle" } }, 
+                      { "$unwind": "$vehicle" }, 
+                      { "$group": { "_id": { "Make" : "$vehicle.Vehicle_Make" , "Fraud" : "$Fraud" }, "avg": { "$avg": "$Insurance_Amount" } } }, 
+                      { "$sort": { "_id": 1 } }, 
+                      { "$project" : { "Make" : "$_id.Make" , "Fraud" : "$_id.Fraud" , "avg" : 1 , "_id" : 0 } },
+                      { "$match": { "$and" : [{ "Make": { "$ne": val[0]["_id"] } }, { "avg" : { "$gt" : val[0]["avg"] } } ,{ "Fraud" : { "$eq" : x }}] }}]
+            
             result = list(mongo.db.Fraud.aggregate(query1))
             print(result)
 
@@ -138,24 +164,49 @@ def getinsuranceamountpercentage():
     val = request.json['Fraud']
     print(val)
 
-    query = [{ "$group": { "_id": "$Fraud", "Total": { "$sum": "$Insurance_Amount" } } }, { "$match": { "_id": val } }]
+    query = [{ "$group": { "_id": "$Fraud", "Total": { "$sum": "$Insurance_Amount" } } }, 
+             { "$match": { "_id": val } }]
+    
     res = list(mongo.db.Fraud.aggregate(query))
     print(res[0]['Total'])
     if res :
-        query1 = [{ "$lookup": { "from": "Vehicle", "localField": "Vehicle", "foreignField": "_id", "as": "vehicle" } }, { "$unwind": "$vehicle" }, { "$match": { "Fraud": 0 } }, { "$group": { "_id": "$vehicle.Vehicle_Make", "sum": { "$sum": "$Insurance_Amount" } } }, { "$project": { "percentage": { "$round": [{ "$multiply": [{ "$divide": ["$sum", res[0]["Total"]] }, 100] }, 3] } } }, { "$sort": { "percentage": 1 } }]
+        query1 = [{ "$lookup": { "from": "Vehicle", "localField": "Vehicle", "foreignField": "_id", "as": "vehicle" } }, 
+                  { "$unwind": "$vehicle" }, 
+                  { "$match": { "Fraud": 0 } }, 
+                  { "$group": { "_id": "$vehicle.Vehicle_Make", "sum": { "$sum": "$Insurance_Amount" } } }, 
+                  { "$project": { "percentage": { "$round": [{ "$multiply": [{ "$divide": ["$sum", res[0]["Total"]] }, 100] }, 3] } } }, 
+                  { "$sort": { "percentage": 1 } }]
+        
         result = list(mongo.db.Fraud.aggregate(query1))
         print(result)
  
     return result
 
-# @app.route('/policy', methods=['GET'])
-# def getaverageofinsuranceamountbypolicy():
 
-#     query = [{ "$lookup": { "from": "Vehicle", "let": { "vehicleId": "$Vehicle" }, "pipeline": [{ "$match": { "$expr": { "$eq": ["$_id", "$$vehicleId"] } } }], "as": "vehicle" } }, { "$unwind": "$vehicle" }, { "$match": { "$expr": { "$and": [ { "$eq": ["$Base_Policy", "All Perils"] }, { "$gt": ["$Insurance_Amount", { "$avg": { "$filter": { "input": "$vehicle.Fraud", "as": "fraud", "cond": { "$eq": ["$$fraud.Base_Policy", "$Base_Policy"] } } } }] } ] } } }, { "$group": { "_id": "$vehicle.Vehicle_Make", "Average": { "$avg": "$Insurance_Amount" } } }, { "$project": { "_id": 0, "Vehicle_Make": "$_id", "Average": 1 } }, { "$sort": { "Vehicle_Make": 1 } }]
-#     result = list(mongo.db.Fraud.aggregate(query))
-#     print(result)
+@app.route('/policy', methods=['POST'])
+def getaverageofinsuranceamountbypolicy():
+
+    val = request.json["Policy"]
+
+    res = []
+
+    for x in range(2):
+
+        query = [{ "$lookup": { "from": "Vehicle", "let": { "vehicleId": "$Vehicle" }, "pipeline": [{ "$match": { "$expr": { "$eq": ["$_id", "$$vehicleId"] } } }], "as": "vehicle" } }, 
+                 { "$unwind": "$vehicle" }, 
+                 { "$match": { "$expr": { "$and": [ { "$eq": ["$Base_Policy", val] } , 
+                                                    { "$eq" : [ "$Fraud" , x] } ,
+                                                    { "$gt": ["$Insurance_Amount", { "$avg": { "$filter": { "input": "$vehicle.Fraud", "as": "fraud", "cond": 
+                                                                                                          { "$eq": ["$$fraud.Base_Policy", "$Base_Policy"] } } } }] } ] } } }, 
+                 { "$group": { "_id": "$vehicle.Vehicle_Make", "Average": { "$avg": "$Insurance_Amount" } } }, 
+                 { "$project": { "_id": 0, "Vehicle_Make": "$_id", "Average": 1 } }, 
+                 { "$sort": { "Vehicle_Make": 1 } }]
+        
+        result = list(mongo.db.Fraud.aggregate(query))
+        print(result)
+        res.append(result)
  
-#     return result
+    return res
 
 @app.route('/vehcilecategorygender', methods=['POST'])
 def getvehcilecategorygender():
@@ -166,14 +217,27 @@ def getvehcilecategorygender():
     res=[]
 
     if val:
-        query = [{ "$lookup": { "from": "Vehicle", "localField": "Vehicle", "foreignField": "_id", "as": "vehicle" } }, { "$unwind": "$vehicle" }, { "$match": { "vehicle.Vehicle_Category": val , "Sex" : "Male" } }, { "$lookup": { "from": "Accident", "localField": "Accident_Area", "foreignField": "_id", "as": "accident" } }, { "$unwind": "$accident" }, { "$group": { "_id": "$accident.Accident_Area" , "count": { "$sum": 1 } } },{"$sort" : { "_id" : 1}}]
+        query = [{ "$lookup": { "from": "Vehicle", "localField": "Vehicle", "foreignField": "_id", "as": "vehicle" } }, 
+                 { "$unwind": "$vehicle" }, 
+                 { "$match": { "vehicle.Vehicle_Category": val , "Sex" : "Male" } }, 
+                 { "$lookup": { "from": "Accident", "localField": "Accident_Area", "foreignField": "_id", "as": "accident" } }, 
+                 { "$unwind": "$accident" }, 
+                 { "$group": { "_id": "$accident.Accident_Area" , "count": { "$sum": 1 } } },
+                 {"$sort" : { "_id" : 1}}]
+
         result = list(mongo.db.Fraud.aggregate(query))
         print(result)
         res.append(result)
 
         if result:
 
-            query1 = [{ "$lookup": { "from": "Vehicle", "localField": "Vehicle", "foreignField": "_id", "as": "vehicle" } }, { "$unwind": "$vehicle" }, { "$match": { "vehicle.Vehicle_Category": val , "Sex" : "Female" } }, { "$lookup": { "from": "Accident", "localField": "Accident_Area", "foreignField": "_id", "as": "accident" } }, { "$unwind": "$accident" }, { "$group": { "_id": "$accident.Accident_Area" , "count": { "$sum": 1 } } },{"$sort" : { "_id" : 1}}]
+            query1 = [{ "$lookup": { "from": "Vehicle", "localField": "Vehicle", "foreignField": "_id", "as": "vehicle" } }, 
+                      { "$unwind": "$vehicle" }, 
+                      { "$match": { "vehicle.Vehicle_Category": val , "Sex" : "Female" } }, 
+                      { "$lookup": { "from": "Accident", "localField": "Accident_Area", "foreignField": "_id", "as": "accident" } }, 
+                      { "$unwind": "$accident" }, { "$group": { "_id": "$accident.Accident_Area" , "count": { "$sum": 1 } } },
+                      {"$sort" : { "_id" : 1}}]
+            
             result1 = list(mongo.db.Fraud.aggregate(query1))
             print(result1)
             res.append(result1)

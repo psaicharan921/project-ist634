@@ -18,7 +18,7 @@ export default function Navbar() {
             <Link to="/analysis" className='links'>Analyzer</Link>
           </li>
           <li >
-            <Link to="/result" className='links'>Result</Link>
+            <Link to="/contactus" className='links'>Contact Us</Link>
           </li>
         </ul>
      </nav>

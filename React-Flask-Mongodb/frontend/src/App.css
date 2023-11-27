@@ -14,7 +14,7 @@
 }
 
 .App-header {
-  border-top: 1px solid rgba(27, 145, 223, 0.852);
+  border-top: 1px solid #646e75;
   height:100px;
   text-align: center;
   color: white;
@@ -71,24 +71,33 @@
 }
 
 .links:hover {
-  background-color: #85c8ef;
+  background-color: #646e75;
   padding: 10px;
   border-radius: 5px;
 }
 
 .page {
-  background-image: linear-gradient(rgba(27, 145, 223, 0.852),rgba(128, 188, 228, 0.852));
+  background-image: linear-gradient(#6c767d,#b5bfc5);
   min-height: 100vh;
   min-width: 100vb;
-  border: 1px solid rgb(37, 144, 226);
+  border: 1px solid #646e75;
+}
+
+.page1 {
+  background-image: linear-gradient(to right, #61686e, #b5bfc52c), url("../public/homepage.jpeg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+  min-width: 100vw;
+  border: 1px solid #646e75;
 }
 
 .charts {
-  padding : 20px;
-  margin: 20px;
+  padding: 20px;
+  margin: 50px;
   border: 2px Solid White;
   border-radius: 20px;
-  box-shadow: 10px 10px 15px #000; 
+  box-shadow: 10px 10px 15px rgb(109, 105, 105);
 }
 
 .charts h4 {
@@ -105,7 +114,7 @@
 .chart_buttons {
   margin-top: 10px;
   color: White;
-  background-color: rgb(3, 81, 183);
+  background-color: #535659;
   padding: 8px;
   font-size: 12px;
   border-radius: 8px;
@@ -126,6 +135,7 @@
 .chart_container {
   display:flex;
   justify-content: center;
+
 }
 
 .dropdowns_container {
@@ -135,24 +145,33 @@
 }
 
 .button_container {
-  border: 1px solid black;
-  padding:50px;
+  border: 1px solid snow;
+  padding: 50px;
   margin: 50px;
   display: flex;
-  justify-content: space-between;
-  height: 100px
-}
-
-.route_buttons {
-  width: 40%;
-  height: 25%vh;
-  padding: 20px;
-  background-color: #1172bc;
+  justify-content: space-around;
+  height: 100px;
+  background-color: #878d91;
   text-align: center;
   color: azure;
   font-weight: bold;
   border-radius: 25px;
-  box-shadow: 5px 5px 15px #000; 
+  box-shadow: 10px 10px 15px rgb(109, 105, 105);
+}
+
+
+.route_buttons {
+  width: 30%;
+  height: 25%vh;
+  padding: 20px;
+  background-color: #ffffff;
+  text-align: center;
+  color: black;
+  font-weight: bold;
+  font-size: larger;
+  border-radius: 25px;
+  box-shadow: 5px 5px 15px #000;
+  border-color:#000;
 }
 
 .charts1 {
@@ -198,5 +217,103 @@
   background-color: white;
   margin-top: 20px;
   border-radius: 10px;
-  padding:10px
+  padding:10px;
+}
+
+.about{
+  background: white;
+  border-radius: 25px;
+  text-align: center;
+  padding-bottom: 50px;
+  margin: 150px 65% 20px 20px;
+  box-shadow: 10px 25px 40px 0 rgba(0, 0, 0, 0.5),20px 50px 80px 0 rgba(0, 0, 0, 0.2),30px 75px 75px 0 rgba(0, 0, 0, 0.1);
+}
+
+.about h3{
+  background-color: white;
+  border-radius: 20px 20px 0px 0px;
+  padding:15px;
+  color:black;
+  box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.5);
+}
+.about p{
+  padding: 30px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 20px;
+  font-family: Helvetica Narrow, sans-serif;
+}
+
+.feedback{
+  margin:20px 0;
+  display:flex;
+  flex-wrap: wrap;
+  width:equal;
+  justify-content: center;
+}
+
+.val .con,.val label{
+  font-weight: bold;
+  font-family: Helvetica Narrow, sans-serif;
+  font-size: 15px;
+  color:rgb(231, 238, 248);
+  display:block;
+  padding-right:50px;
+  margin:10px 0px;
+}
+.val .con:hover{
+  background: White;
+  color:black;
+  padding:5px;
+  border-radius:5px;
+  margin:0px 40px 0px 0px;
+}
+.val .con:active{
+  background: rgb(3, 103, 112);
+  color:white;
+  padding:5px;
+  border-radius:5px
+}
+
+.info1{
+  background:#424949ed;
+  padding:50px;
+  border-radius:20px;
+  width:627px;
+  margin:100px;
+  box-shadow: 10px 25px 40px 0 rgba(0, 0, 0, 0.5),20px 50px 80px 0 rgba(0, 0, 0, 0.3);
+}
+
+.confirmation-box{
+  display:flex;
+  justify-content: center;
+}
+
+.confirmation{
+  background:#5b6565ed;
+  padding:50px;
+  border-radius:20px;
+  margin:20px;
+  font-family: Helvetica Narrow, sans-serif;
+  box-shadow: 10px 25px 40px 0 rgba(0, 0, 0, 0.5),20px 50px 80px 0 rgba(0, 0, 0, 0.3);
+}
+
+.homepage {
+  padding: 20px;
+  background-color: #ffffff;
+  color: black;
+  border-radius: 25px;
+  box-shadow: 5px 5px 15px #000;
+  border-color:#000;
+  margin: 50px;
+}
+
+.homepage h4 {
+
+  text-align: center;
+
+}
+
+.homepage p {
+  font-size: medium;
 }
